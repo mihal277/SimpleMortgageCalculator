@@ -21,7 +21,12 @@ def calculate_payments(loan_amount, interest_rate, term, typ):
             loan_amount * (q ** payments) * (q - 1) / (q ** payments - 1)
         ]
     else:
-        raise NotImplementedError
+        capital_installment = loan_amount / payments
+        interest_instalments = [
+            ((loan_amount - i * capital_installment) * interest_rate / 100) / 12
+            for i in range(payments)
+        ]
+        return [capital_installment + ii for ii in interest_instalments]
 
 
 if __name__ == "__main__":
@@ -40,4 +45,4 @@ if __name__ == "__main__":
     payments = calculate_payments(loan, interest, term, args.type)
     print("Your monthly payments are:")
     for i, payment in enumerate(payments, 1):
-        print(f"{i}. {payment}")
+        print(f"{i}. {round(payment, 2)}")
